@@ -4,6 +4,11 @@
 An interactive Streamlit dashboard built as part of the **AICTE | IBM SkillsBuild Data Analytics with AI Internship 2026 (BharatCares)** programme.  
 The dashboard performs end-to-end analysis of a supermarket's sales data — from data cleaning to advanced visualizations and business insights.
 
+
+## Live Demo
+[View Live Website]([https://your-project-name.netlify.app](https://supermarket-sales-analytics-hq5hhidaobpoagh5r2byrf.streamlit.app/))
+
+
 **Student:** Saurabh Raut  
 **Institute:** Walchand Institute of Technology, Solapur  
 **Department:** Electronics and Computer Engineering
