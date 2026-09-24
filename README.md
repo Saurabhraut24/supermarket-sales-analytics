@@ -7,7 +7,7 @@ The dashboard performs end-to-end analysis of a supermarket's sales data — fro
 
 ## Live Demo
 
-https://supermarket-sales-analytics-hq5hhidaobpoagh5r2byrf.streamlit.app/
+[View Live Website] (https://supermarket-sales-analytics-hq5hhidaobpoagh5r2byrf.streamlit.app/)
 
 **Student:** Saurabh Raut  
 **Institute:** Walchand Institute of Technology, Solapur  
