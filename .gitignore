@@ -1,43 +1,26 @@
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.pyc
+.Python
 
 # Virtual environments
-.venv/
 venv/
 env/
+.env/
 ENV/
 
-# Environment variables
-.env
-.env.local
+# Jupyter Notebooks
+.ipynb_checkpoints/
 
-# IDE / Editor
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
 .vscode/
 .idea/
-*.swp
-*.swo
-*.DS_Store
-Thumbs.db
 
 # Streamlit cache
 .streamlit/
-
-# Pytest / test cache
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# OS generated
-desktop.ini

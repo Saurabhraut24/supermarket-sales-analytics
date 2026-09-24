@@ -35,7 +35,7 @@ from plotly.subplots import make_subplots
 
 # ── Default dataset path (relative to this file's directory) ─────────────────
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_CSV_PATH = os.path.join(_THIS_DIR, "..", "data", "SuperMarket Analysis.csv")
+DEFAULT_CSV_PATH = os.path.join(_THIS_DIR, "SuperMarket Analysis.csv")
 
 # ── Minimum required columns for schema validation ───────────────────────────
 REQUIRED_COLUMNS = {"Invoice ID", "Branch", "Sales", "Quantity", "Rating", "Date"}
@@ -437,6 +437,8 @@ def branch_analysis(df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate branch-level metrics."""
     if "Branch" not in df.columns:
         return pd.DataFrame()
+    if "Sales" not in df.columns:
+        return pd.DataFrame()
     agg = {"Sales": "sum"}
     if "gross income" in df.columns:
         agg["gross income"] = "sum"
@@ -449,7 +451,7 @@ def branch_analysis(df: pd.DataFrame) -> pd.DataFrame:
 
 def product_line_analysis(df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate product-line metrics."""
-    if "Product line" not in df.columns:
+    if "Product line" not in df.columns or "Sales" not in df.columns:
         return pd.DataFrame()
     agg = {"Sales": "sum"}
     if "gross income" in df.columns:
@@ -458,12 +460,10 @@ def product_line_analysis(df: pd.DataFrame) -> pd.DataFrame:
         agg["Quantity"] = "sum"
     if "Unit price" in df.columns:
         agg["Unit price"] = "mean"
-    return (
-        df.groupby("Product line")
-        .agg(agg)
-        .reset_index()
-        .sort_values("Sales", ascending=False)
-    )
+    result = df.groupby("Product line").agg(agg).reset_index()
+    if "Sales" in result.columns:
+        result = result.sort_values("Sales", ascending=False)
+    return result
 
 # =============================================================================
 # SECTION 7 — BUSINESS INSIGHTS
@@ -1077,6 +1077,17 @@ if filtered_df.empty:
     st.warning("No data matches the selected filters. Please adjust your filters.")
     st.stop()
 
+# Guard: non-standard CSV (missing required columns)
+_REQUIRED = {"Sales", "Date", "Branch", "Quantity", "Rating", "Product line"}
+_MISSING  = _REQUIRED - set(filtered_df.columns)
+if _MISSING:
+    st.error(
+        f"⚠️ **Non-standard CSV detected.** Missing required columns: `{', '.join(sorted(_MISSING))}`\n\n"
+        "Please upload the correct **SuperMarket Analysis.csv** file (included in the project folder), "
+        "or remove the uploaded file and let the app use the default dataset."
+    )
+    st.stop()
+
 # ── Compute KPIs ──────────────────────────────────────────────────────────────
 kpis = calc_kpis(filtered_df)
 
@@ -1216,7 +1227,11 @@ with tabs[1]:
 # ═══ TAB 3: PRODUCT ANALYTICS ══════════════════════════════════════════════════
 with tabs[2]:
     st.markdown('<div class="section-header">Product Analytics</div>', unsafe_allow_html=True)
-    prod_df = product_line_analysis(filtered_df)
+    if "Sales" not in filtered_df.columns:
+        st.warning("⚠️ Product Analytics requires a 'Sales' column. Please upload the correct SuperMarket Analysis CSV.")
+        prod_df = pd.DataFrame()
+    else:
+        prod_df = product_line_analysis(filtered_df)
 
     pa1, pa2 = st.columns(2)
     with pa1:
