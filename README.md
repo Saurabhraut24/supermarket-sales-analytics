@@ -1,5 +1,10 @@
 # Supermarket Sales Analytics Dashboard
 
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.32%2B-red)
+![Plotly](https://img.shields.io/badge/Plotly-5.18%2B-green)
+
+
 ## Project Overview
 An interactive Streamlit dashboard built as part of the **AICTE | IBM SkillsBuild Data Analytics with AI Internship 2026 (BharatCares)** programme.  
 The dashboard performs end-to-end analysis of a supermarket's sales data — from data cleaning to advanced visualizations and business insights.
